@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.python-version
+env/
+venv/
+*.egg-info
+
+# OS Specific
+.DS_Store
+.Thumbs.db
+
+# Deployment
+deploy/* # If you have sensitive deployment keys, be careful
+
+# Node.js (if you use npm/yarn for frontend later)
+node_modules/
+package-lock.json
+yarn.lock
