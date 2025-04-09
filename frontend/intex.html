@@ -1,29 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elegant Showcase</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>My Elegant Trading Journal</title>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Our Exquisite Collection</h1>
-            <p>Discover our curated selection of premium items.</p>
-        </header>
-        <main>
-            <section id="item-list-section">
-                <h2>Featured Items</h2>
-                <ul id="item-list">
-                    <li class="loading">Loading items...</li>
-                </ul>
-            </section>
-        </main>
-        <footer>
-            <p>&copy; 2025 Elegant App</p>
-        </footer>
-    </div>
-    <script src="script.js"></script>
+  <h1>📒 My Trades</h1>
+  <ul id="trades-list"></ul>
+
+  <h2>Add New Trade</h2>
+  <input type="text" id="symbol" placeholder="Symbol" />
+  <input type="number" id="profit" placeholder="Profit/Loss" />
+  <input type="text" id="note" placeholder="Note" />
+  <button id="add-trade-btn">Add Trade</button>
+
+  <script src="script.js"></script>
 </body>
 </html>
