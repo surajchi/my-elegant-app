@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function fetchItems() {
         itemList.innerHTML = '<li class="loading">Loading items...</li>';
-        fetch('http://127.0.0.1:5000/api/items')
+        fetch('https://my-elegant-app-1.onrender.com')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
