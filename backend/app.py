@@ -1,41 +1,48 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend', static_url_path='/')
 CORS(app)
 
-# Sample data (replace with your actual data source)
-items = [
-    {"id": 1, "name": "Stylish Gadget", "description": "A sleek and modern gadget."},
-    {"id": 2, "name": "Elegant Decor", "description": "Beautiful piece for your home."},
-    {"id": 3, "name": "Premium Accessory", "description": "A high-quality accessory to complement your style."},
+# Sample data (replace with DB later)
+trades = [
+    {"id": 1, "symbol": "XAUUSD", "profit": 45.2, "note": "Scalped gold"},
+    {"id": 2, "symbol": "EURUSD", "profit": -20.5, "note": "Bad entry"},
 ]
 
-@app.route('/api/items', methods=['GET'])
-def get_items():
-    return jsonify(items)
+# Serve frontend
+@app.route('/')
+def serve_index():
+    return app.send_static_file('index.html')
 
-@app.route('/api/items/<int:item_id>', methods=['GET'])
-def get_item(item_id):
-    item = next((item for item in items if item['id'] == item_id), None)
-    if item:
-        return jsonify(item)
-    return jsonify({"message": "Item not found"}), 404
+# Serve JS/CSS if needed
+@app.route('/<path:path>')
+def serve_static(path):
+    return app.send_static_file(path)
 
-@app.route('/api/items', methods=['POST'])
-def create_item():
+# API: Get all trades
+@app.route('/api/trades', methods=['GET'])
+def get_trades():
+    return jsonify(trades)
+
+# API: Add a new trade
+@app.route('/api/trades', methods=['POST'])
+def add_trade():
     data = request.get_json()
-    if not data or 'name' not in data or 'description' not in data:
-        return jsonify({"message": "Please provide name and description"}), 400
-    new_item = {
-        "id": len(items) + 1,
-        "name": data['name'],
-        "description": data['description']
+    new_trade = {
+        "id": len(trades) + 1,
+        "symbol": data.get("symbol"),
+        "profit": data.get("profit"),
+        "note": data.get("note")
     }
-    items.append(new_item)
-    return jsonify(new_item), 201
+    trades.append(new_trade)
+    return jsonify(new_trade), 201
+
+# API: Export trades
+@app.route('/api/export', methods=['GET'])
+def export_trades():
+    return jsonify({"message": "Exporting to CSV coming soon!"})
 
 if __name__ == '__main__':
     app.run(debug=True)
-    @app.route("/")
-    return jsonify({"message": "Backend is live and running!"})
+
