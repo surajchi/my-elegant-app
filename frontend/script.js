@@ -1,33 +1,32 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const itemList = document.getElementById('item-list');
+const API_URL = window.location.origin + "/api/trades";
 
-    function fetchItems() {
-        itemList.innerHTML = '<li class="loading">Loading items...</li>';
-        fetch('https://my-elegant-app-1.onrender.com')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                itemList.innerHTML = ''; // Clear loading message
-                if (data.length > 0) {
-                    data.forEach(item => {
-                        const listItem = document.createElement('li');
-                        listItem.innerHTML = `<strong>${item.name}:</strong> ${item.description} (ID: ${item.id})`;
-                        itemList.appendChild(listItem);
-                    });
-                } else {
-                    itemList.innerHTML = '<li class="empty">No items available.</li>';
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching items:', error);
-                itemList.innerHTML = '<li class="error">Failed to load items. Please try again later.</li>';
-            });
-    }
+async function loadTrades() {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    const list = document.getElementById("trades-list");
+    list.innerHTML = "";
+    data.forEach(t => {
+        const item = document.createElement("li");
+        item.innerText = `${t.symbol}: ${t.profit} USD (${t.note})`;
+        list.appendChild(item);
+    });
+}
 
-    // Initial fetch of items when the page loads
-    fetchItems();
-});
+async function addTrade() {
+    const symbol = document.getElementById("symbol").value;
+    const profit = parseFloat(document.getElementById("profit").value);
+    const note = document.getElementById("note").value;
+
+    const res = await fetch(API_URL, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({symbol, profit, note})
+    });
+
+    const newTrade = await res.json();
+    alert(`Added trade: ${newTrade.symbol}`);
+    loadTrades();
+}
+
+document.addEventListener("DOMContentLoaded", loadTrades);
+document.getElementById("add-trade-btn").addEventListener("click", addTrade);
